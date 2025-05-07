@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "reason_ActivityMotion",
+      "value": "运动健康统计步数"
+    },
+    {
+      "name": "reason_APPROXIMATELY_LOCATION",
+      "value": "获取位置信息"
     }
   ]
 }

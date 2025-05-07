@@ -3,7 +3,8 @@ import { AppStorageV2 } from "@kit.ArkUI";
 import { GlobalMusic } from "../models/GlobalMusic";
 import { playerManager } from "../utils/AvPlayerManager";
 import { Line, Lyric } from "../models/Lyric";
-import http from '@ohos.net.http';
+import { common } from '@kit.AbilityKit';
+import { GlobalHealthData } from "../models/Healthy";
 
 // 跳转页面入口函数
 @Builder
@@ -13,14 +14,14 @@ export function PlayBuilder() {
 
 @ComponentV2
 struct Play {
+  pathStack: NavPathStack = new NavPathStack();
   @Local panelHeight: string = '0%'
   @Local panelOpacity: number = 0
-  pathStack: NavPathStack = new NavPathStack();
-  @Local imgOrLrc:boolean = true
+
+  @Local playMode:number=0
   // 当前播放的歌曲
-  @Local
-  playState: GlobalMusic = AppStorageV2.connect(GlobalMusic, "SONG_KEY", () => new GlobalMusic())!
-  
+  @Local playState: GlobalMusic = AppStorageV2.connect(GlobalMusic, "SONG_KEY", () => new GlobalMusic())!
+  @Local context: common.UIAbilityContext | null = null
   // 歌词相关
   @Local lyric: Lyric = new Lyric()
   @Local lrcContent: string = ''
@@ -29,7 +30,7 @@ struct Play {
   @Local nextLyric: string = ''
   @Local activeLyricIndex: number = -1
   @Local scroller: Scroller = new Scroller() // 添加歌词滚动控制器
-
+  @Local healthData:GlobalHealthData=AppStorageV2.connect(GlobalHealthData,'HEALTH_KEY',()=>new GlobalHealthData())!
 
 
   @Builder
@@ -208,7 +209,7 @@ struct Play {
         console.info('没有正在播放的歌曲');
         this.lrcContent = '';
       }
-      
+
       // 解析歌词
       if (this.lrcContent) {
         this.lyric.parseLrc(this.lrcContent);
@@ -238,15 +239,15 @@ struct Play {
       this.currentLyric = lyrics[0];
       this.nextLyric = lyrics[1];
       this.activeLyricIndex = this.lyric.getCurrentIndex();
-      
+
       // 如果有活跃的歌词行，滚动到该行，使其居中显示
       if (this.activeLyricIndex >= 0) {
         this.scroller.scrollToIndex(this.activeLyricIndex, true,ScrollAlign.CENTER);
       }
-      
+
       // 限制AVSession状态更新频率，每2秒最多更新一次
       const currentTime = new Date().getTime();
-      if (currentTime - this.lastAVSessionUpdateTime > 300) {
+      if (currentTime - this.lastAVSessionUpdateTime > 200) {
         // 这里不直接调用avSessionManager.setAVPlayBackState()
         // 因为playerManager.timeUpdate事件中已经调用了该方法
         // 我们只需要更新时间戳即可
@@ -311,16 +312,133 @@ struct Play {
     .layoutWeight(1)
   }
 
-  aboutToAppear() {
-    // 加载歌词
-    this.fetchLyric();
-    
-    // 设置定时器，每200毫秒更新一次歌词，与AVSession状态更新频率保持一致
-    setInterval(() => {
+  @Local lyricUpdateTimer: number = -1
+
+  aboutToAppear() {// 页面进入时执行
+    this.context = getContext(this) as common.UIAbilityContext;// 获取上下文，用于请求权限
+    this.fetchLyric();// 加载歌词
+    this.lyricUpdateTimer = setInterval(() => {// 设置定时器, 每200毫秒更新一次歌词
       this.updateLyric();
     }, 200);
   }
   
+  aboutToDisappear() {
+    if (this.lyricUpdateTimer !== -1) {// 清理定时器，防止内存泄漏
+      clearInterval(this.lyricUpdateTimer);
+      this.lyricUpdateTimer = -1;
+    }
+    this.healthData.stopStepCounter();// 停止步数计数器
+  }
+
+
+  // 运动模式
+  @Builder
+  RunMode() {
+    Column() {
+      // 顶部标题
+      Text('运动模式')
+        .fontSize(28)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#FFFFFF')
+        .margin({ top: 20, bottom: 20 })
+      
+      // 步数圆环
+      Stack() {
+        // Progress组件 显示步数进度，value 为当前步数，total 为目标步数, ProgressType.Ring 为圆环类型
+        Progress({ value: this.healthData.stepCount, total: this.healthData.stepGoal, type: ProgressType.Ring })
+          .width('80%')
+          .height(300)
+          .color('#87CEFA')
+          .backgroundColor('#333333')
+          .style({ strokeWidth: 20 }) // 设置圆环的宽度
+          .animation({
+            duration: 1000, // 设置动画持续时间
+            curve: Curve.EaseOut // 设置动画曲线
+          })
+        
+        Column() {
+          Text(this.healthData.stepCount.toString())
+            .fontSize(60)
+            .fontWeight(FontWeight.Bold)
+            .fontColor('#FFFFFF')
+          
+          Text('步')
+            .fontSize(24)
+            .fontColor('#FFFFFF')
+            .margin({ top: 8 })
+          
+          Text(`目标: ${this.healthData.stepGoal}步`)
+            .fontSize(24)
+            .fontColor('#ffd4e1ee')
+            .margin({ top: 16 })
+        }
+      }
+      .margin({ top: 20, bottom: 40 })
+      
+      // 运动数据卡片
+      Row() {
+        // 卡路里
+        Column() {
+          Text(this.healthData.calories.toString())
+            .fontSize(32)
+            .fontWeight(FontWeight.Bold)
+            .fontColor('#FFFFFF')
+          
+          Text('卡路里')
+            .fontSize(16)
+            .fontColor('#87CEFA')
+        }
+        .backgroundColor('#333333')
+        .borderRadius(16)
+        .width('45%')
+        .height(120)
+        .justifyContent(FlexAlign.Center)
+        
+        // 运动时间
+        Column() {
+          Text(`${Math.floor(this.healthData.exerciseTime / 60)}:${(this.healthData.exerciseTime % 60).toString().padStart(2, '0')}`)
+            .fontSize(32)
+            .fontWeight(FontWeight.Bold)
+            .fontColor('#FFFFFF')
+          
+          Text('运动时间')
+            .fontSize(16)
+            .fontColor('#87CEFA')
+        }
+        .backgroundColor('#333333')
+        .borderRadius(16)
+        .width('45%')
+        .height(120)
+        .justifyContent(FlexAlign.Center)
+      }
+      .width('100%')
+      .justifyContent(FlexAlign.SpaceAround)
+      
+      // 开始/停止按钮
+      Button(this.healthData.isExercising ? '暂停运动' : '开始运动')
+        .width('80%')
+        .height(50)
+        .fontSize(20)
+        .fontWeight(FontWeight.Medium)
+        .backgroundColor(this.healthData.isExercising ? '#FF6347' : '#87CEFA')
+        .borderRadius(25)
+        .margin({ top: 20 })
+        .onClick(() => {
+          if (this.healthData.isExercising) {
+            this.healthData.stopStepCounter()
+          } else {
+            this.healthData.startStepCounter()
+          }
+        })
+        .animation({
+          duration: 300
+        })
+    }
+    .width('100%')
+    .height('80%')
+    .justifyContent(FlexAlign.Start)
+   .layoutWeight(1)
+  }
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
@@ -344,13 +462,15 @@ struct Play {
               // 图片、唱针、歌名、作者
               Column(){
                 //  唱片模式
-                if(this.imgOrLrc) this.DiscMode()
+                if(this.playMode==0) this.DiscMode()
                 // 歌词模式
-                else this.LrcMode()
+                else if(this.playMode==1) this.LrcMode()
+                // 运动模式
+                else if(this.playMode==2) this.RunMode()
               }.layoutWeight(1)
               .width('100%')
               .onClick(()=>{
-                this.imgOrLrc=!this.imgOrLrc
+                this.playMode=(this.playMode+1)%3
               })
 
               // 播放

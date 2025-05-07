@@ -12,6 +12,5 @@ struct Index {
       this.pathStack.pushPathByName("Start", null, false); //跳转ByName
     })
     .hideNavBar(true) //不会把自己加入到pathStack中
-
   }
 }
