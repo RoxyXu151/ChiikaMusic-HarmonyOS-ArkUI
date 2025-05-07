@@ -1,10 +1,7 @@
-import image from "@ohos.multimedia.image"
-import { it } from "@ohos/hypium"
 import { Find } from "./Find"
 import { Recommend } from "./Recommend"
 import { AppStorageV2 } from "@kit.ArkUI"
 import { Mine } from "./Mine"
-import { PlayBuilder } from "./Play"
 import { MomentSquarePage } from "./Moment"
 
 // 跳转页面入口函数
@@ -23,12 +20,12 @@ struct LayOut {
       icon: $r('app.media.ic_recommend')
     },
     {
-      text: '发现',
-      icon: $r('app.media.ic_find')
-    },
-    {
       text: '播放',
       icon: $r('app.media.ic_moment')
+    },
+    {
+      text: '发现',
+      icon: $r('app.media.ic_find')
     },
     {
       text: '我的',

@@ -6,7 +6,9 @@ export interface SongItemType {
   id: string
   lrc?: string // 歌词属性，可选
 }
+// 阿里云存储的资源地址
 export const baseUrl:string='https://hm-music.oss-cn-beijing.aliyuncs.com/'
+// 歌曲信息列表
 export const songs: SongItemType[] = [
   {
     img: 'app.media.song0',
