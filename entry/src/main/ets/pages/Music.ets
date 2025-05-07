@@ -12,7 +12,7 @@ export struct Music {
 
   build() {
     Column() {
-      Text('猜你喜欢')
+      Text('本地音乐')
         .fontColor('#333333')
         .fontSize(22)
         .fontWeight(FontWeight.Bold)

@@ -40,7 +40,7 @@ class AvPlayerManager{
       //设置播放状态
       avSessionManager.setAVPlayBackState()
       this.currentSong.time=time
-    })
+    },)
 
   }
   //设置播放资源

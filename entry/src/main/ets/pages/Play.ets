@@ -108,15 +108,9 @@ struct Play {
           .clip(true)
           .aspectRatio(1)
           .rotate({
-            angle: this.playState.isPlay ? (new Date().getTime()) % 360 : 0,
-            centerX: '50%',
-            centerY: '50%'
-          })
-          .animation({
-            duration: 50,
-            tempo: 1.0,
-            iterations: -1,
-            curve: Curve.Linear
+            angle: (this.playState.time/this.playState.duration) * 360 * 5.0, // 一首歌播完转10圈
+            centerX: '50%', // 设置中心点为图片中心
+            centerY: '50%' // 设置中心点为图片中心
           })
         }
         .margin({
@@ -132,7 +126,7 @@ struct Play {
           .width(200)
           .aspectRatio(1)
           .rotate({
-            angle: this.playState.isPlay ? -55 : -30,
+            angle: this.playState.isPlay ? -40 : -60,
             centerX: 100,
             centerY: 30
           })

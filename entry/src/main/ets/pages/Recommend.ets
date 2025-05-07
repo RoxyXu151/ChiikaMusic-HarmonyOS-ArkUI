@@ -2,8 +2,8 @@ import { it } from "@ohos/hypium"
 
 @ComponentV2
 export struct Recommend {
-  @Builder
-  titleBuilder(title: string) {
+
+  @Builder titleBuilder(title: string) {
     Row() {
       Text(title)
         .fontColor(Color.Black)
@@ -54,9 +54,6 @@ export struct Recommend {
     $r('app.media.Chiikawa2'),
     $r('app.media.Chiikawa3'),
     $r('app.media.Chiikawa4'),
-  // "https://wenbinxu151-typora.oss-cn-beijing.aliyuncs.com/typora/202505031018213.jpeg",
-    // "https://wenbinxu151-typora.oss-cn-beijing.aliyuncs.com/typora/202505031018834.jpeg",
-    // "https://wenbinxu151-typora.oss-cn-beijing.aliyuncs.com/typora/202505031018026.jpeg"
   ]
   // 推荐歌单数据
   recommendList: recommendListType[] = [
@@ -93,18 +90,24 @@ export struct Recommend {
       Row() {
         Image($r('app.media.ic_search'))
           .width(22)
-          .fillColor(Color.Gray)
-        TextInput({ placeholder: "你好" })
-          .placeholderColor(Color.Gray)
-          .fontColor(Color.Gray)
+          .fillColor('#666666')
+          .margin({ left: 10 })
+        TextInput({ placeholder: "高原红 容中尔甲" })
+          .placeholderColor('#666666')
+          .fontColor('#333333')
+          .backgroundColor('transparent')
           .layoutWeight(1)
+          .margin({ left: 5 })
         Image($r('app.media.ic_code'))
           .width(22)
-          .fillColor(Color.Gray)
+          .fillColor('#666666')
+          .margin({ right: 10 })
       }
       .width('100%')
-      .backgroundColor(Color.Black)
-      .border({ radius: 20 })
+      .height(40)
+      .backgroundColor('#F1F3F5')
+      .borderRadius(20)
+      .margin({ top: 10, bottom: 10 })
       .padding({ left: 10, right: 10 })
 
       //轮播图

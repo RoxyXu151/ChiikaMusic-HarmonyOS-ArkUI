@@ -1,4 +1,4 @@
-import { Find } from "./Find"
+import { Music } from "./Music"
 import { Recommend } from "./Recommend"
 import { AppStorageV2 } from "@kit.ArkUI"
 import { Mine } from "./Mine"
@@ -34,8 +34,8 @@ struct LayOut {
   ]
   @Local selectedTab: number = 0
 
-  @Builder
-  tabBuilder(item: TabClass, index: number) {
+  // tabBuilder 构建tabBar的item
+  @Builder tabBuilder(item: TabClass, index: number) {
     Column({ space: 8 }) { // space 设置tabBar的item之间的间距
       Image(item.icon)
         .width(24)
@@ -53,13 +53,13 @@ struct LayOut {
 
   build() {
     NavDestination() {
-      Tabs({ barPosition: BarPosition.End }) { //  设置tabBar的位置
+      Tabs({ barPosition: BarPosition.End }) { //Tabs组件为底部tabBar组件，barPosition设置tabBar的位置,BarPosition.End表示底部
         ForEach(this.tabData, (item: TabClass, index: number) => {
           TabContent() { // 设置tabBar的item
-            if(index==0) Recommend()
-            else if(index==1) Find()
-            else if(index==2) MomentSquarePage()
-            else if(index==3) Mine()
+            if(index==0) Recommend() // 首页
+            else if(index==1) Music() // 播放
+            else if(index==2) MomentSquarePage() // 发现
+            else if(index==3) Mine() // 我的
           }.tabBar(this.tabBuilder(item, index))
           .backgroundColor('#FFFFFF')
           .expandSafeArea()
@@ -70,6 +70,7 @@ struct LayOut {
       })
       .expandSafeArea()
       .backgroundColor('#F0F8FF')
+      .animationDuration(AnimationMode.CONTENT_FIRST_WITH_JUMP)
     }
     .expandSafeArea()
     // .title('布局页')
