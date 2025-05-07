@@ -74,6 +74,7 @@ export struct Find {
             .margin({ bottom: 15 })
             .padding(10)
             .onClick(() => {
+              console.debug('[ChiikaMusic]:点击了' + index)
               this.pathStack.pushPathByName('Play',null,false)
               playerManager.singPlay(item);
               this.playState.songId = index;

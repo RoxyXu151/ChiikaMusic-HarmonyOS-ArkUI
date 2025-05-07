@@ -17,12 +17,15 @@ export class GlobalMusic {
 
   @Trace playMode:'auto'|'random'|'repeat'='auto'//播放模式
 
+  //  设置
   set(song:SongItemType){
     this.img=song.img
     this.name=song.name
     this.author=song.author
     this.url=song.url
   }
+
+  //  重置
   reset(){//全部置为默认值
     this.img=""
     this.name=""
@@ -35,5 +38,21 @@ export class GlobalMusic {
     this.playList=[]
     this.isPlay=false
     this.playMode='auto'
+  }
+
+  // 毫秒转时分秒
+  number2time(number: number) {
+    // 毫秒 → 秒 → 分+秒; 先判断是否大于1分钟
+    if (number > 60 * 1000) {
+      const s = Math.floor(number / 1000 % 60)
+      const m = Math.floor(number / 1000 / 60)
+      const second = s.toString().padStart(2, '0')
+      const minute = m.toString().padStart(2, '0')
+      return minute + ':' + second
+    } else {
+      const s = Math.floor(number / 1000 % 60)
+      const second = s.toString().padStart(2, '0')
+      return '00:' + second
+    }
   }
 }

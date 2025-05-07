@@ -2,7 +2,7 @@ import { SongItemType } from "../models/music"
 import { AppStorageV2 } from "@kit.ArkUI";
 import { GlobalMusic } from "../models/GlobalMusic";
 import { playerManager } from "../utils/AvPlayerManager";
-import { Line, Lyric } from "../models/Lyric";
+import { GlobalLyric, Line} from "../models/Lyric";
 import { common } from '@kit.AbilityKit';
 import { GlobalHealthData } from "../models/Healthy";
 
@@ -15,26 +15,39 @@ export function PlayBuilder() {
 @ComponentV2
 struct Play {
   pathStack: NavPathStack = new NavPathStack();
-  @Local panelHeight: string = '0%'
-  @Local panelOpacity: number = 0
-
+  //上下文
+  @Local context: common.UIAbilityContext | null = null
+  // 播放模式
   @Local playMode:number=0
   // 当前播放的歌曲
   @Local playState: GlobalMusic = AppStorageV2.connect(GlobalMusic, "SONG_KEY", () => new GlobalMusic())!
-  @Local context: common.UIAbilityContext | null = null
-  // 歌词相关
-  @Local lyric: Lyric = new Lyric()
-  @Local lrcContent: string = ''
-  @Local isLyricLoaded: boolean = false
-  @Local currentLyric: string = ''
-  @Local nextLyric: string = ''
-  @Local activeLyricIndex: number = -1
-  @Local scroller: Scroller = new Scroller() // 添加歌词滚动控制器
+  // 歌词数据
+  @Local lyric:GlobalLyric=AppStorageV2.connect(GlobalLyric,'LYRIC_KEY',()=>new GlobalLyric())!
+  //运动健康
   @Local healthData:GlobalHealthData=AppStorageV2.connect(GlobalHealthData,'HEALTH_KEY',()=>new GlobalHealthData())!
+  //歌词列表
+  @Local panelHeight: string = '0%'
+  @Local panelOpacity: number = 0
 
 
-  @Builder
-  deleteButton(index: number) {
+  aboutToAppear() {// 页面进入时执行
+    console.debug("[ChiikaMusic]:进入Play界面")
+    this.context = getContext(this) as common.UIAbilityContext;// 获取上下文，用于请求权限
+    this.lyric.fetchLyric(this.playState) // 获取当前播放的歌曲对应歌词
+    this.lyric.lyricUpdateTimer = setInterval(() => {// 设置定时器, 每200毫秒更新一次歌词
+      this.lyric.updateLyric(this.playState);
+    }, 200);
+  }
+
+  aboutToDisappear() {
+    if (this.lyric.lyricUpdateTimer !== -1) {// 清理定时器，防止内存泄漏
+      clearInterval(this.lyric.lyricUpdateTimer);
+      this.lyric.lyricUpdateTimer = -1;
+    }
+    this.healthData.stopStepCounter();// 停止步数计数器
+  }
+
+  @Builder deleteButton(index: number) {
     Button('删除')
       .backgroundColor('#87CEFA')
       .fontColor('#FFFFFF')
@@ -75,24 +88,8 @@ struct Play {
 
   }
 
-  number2time(number: number) {
-    // 毫秒 → 秒 → 分+秒; 先判断是否大于1分钟
-    if (number > 60 * 1000) {
-      const s = Math.floor(number / 1000 % 60)
-      const m = Math.floor(number / 1000 / 60)
-      const second = s.toString().padStart(2, '0')
-      const minute = m.toString().padStart(2, '0')
-      return minute + ':' + second
-    } else {
-      const s = Math.floor(number / 1000 % 60)
-      const second = s.toString().padStart(2, '0')
-      return '00:' + second
-    }
-  }
-
   // 唱片模式
-  @Builder
-  DiscMode() {
+  @Builder DiscMode() {
     Column(){
       // 图片
       Stack({ alignContent: Alignment.Top }) {
@@ -190,83 +187,16 @@ struct Play {
     .justifyContent(FlexAlign.SpaceAround)
   }
 
-  // 获取歌词内容
-  async fetchLyric() {
-    try {
-      // 使用当前播放歌曲的歌词属性
-      if (this.playState.playList.length > 0 && this.playState.playerIndex >= 0) {
-        const currentSong = this.playState.playList[this.playState.playerIndex];
-        if (currentSong.lrc) {
-          // 使用歌曲对象中的歌词
-          this.lrcContent = currentSong.lrc;
-          console.info(`使用歌曲[${currentSong.name}]的内置歌词，长度: ${this.lrcContent.length}`);
-        } else {
-          // 如果当前歌曲没有歌词属性，使用默认提示
-          this.lrcContent = '';
-          console.info(`歌曲[${currentSong.name}]没有内置歌词`);
-        }
-      } else {
-        console.info('没有正在播放的歌曲');
-        this.lrcContent = '';
-      }
-
-      // 解析歌词
-      if (this.lrcContent) {
-        this.lyric.parseLrc(this.lrcContent);
-        const allLyrics = this.lyric.getAllLyrics();
-        console.info(`解析后歌词行数: ${allLyrics.length}`);
-        if (allLyrics.length > 0) {
-          console.info(`第一行歌词: ${allLyrics[0].text}, 时间: ${allLyrics[0].time}`);
-        }
-        this.isLyricLoaded = true;
-        console.info('歌词加载成功');
-      } else {
-        this.isLyricLoaded = true; // 标记为已加载，但没有歌词内容
-        console.info('没有可用的歌词');
-      }
-    } catch (error) {
-      console.error(`获取歌词异常: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  }
-  
-  // 上次更新AVSession状态的时间
-  @Local lastAVSessionUpdateTime: number = 0;
-  
-  // 更新当前显示的歌词
-  updateLyric() {
-    if (this.isLyricLoaded && this.playState.time > 0) {
-      const lyrics = this.lyric.getCurrentAndNextLyric(this.playState.time);
-      this.currentLyric = lyrics[0];
-      this.nextLyric = lyrics[1];
-      this.activeLyricIndex = this.lyric.getCurrentIndex();
-
-      // 如果有活跃的歌词行，滚动到该行，使其居中显示
-      if (this.activeLyricIndex >= 0) {
-        this.scroller.scrollToIndex(this.activeLyricIndex, true,ScrollAlign.CENTER);
-      }
-
-      // 限制AVSession状态更新频率，每2秒最多更新一次
-      const currentTime = new Date().getTime();
-      if (currentTime - this.lastAVSessionUpdateTime > 200) {
-        // 这里不直接调用avSessionManager.setAVPlayBackState()
-        // 因为playerManager.timeUpdate事件中已经调用了该方法
-        // 我们只需要更新时间戳即可
-        this.lastAVSessionUpdateTime = currentTime;
-      }
-    }
-  }
-  
   // 歌词模式
-  @Builder
-  LrcMode() {
+  @Builder LrcMode() {
     Column() {
       // 如果歌词未加载，显示加载提示
-      if (!this.isLyricLoaded) {
+      if (!this.lyric.isLyricLoaded) {
         Text('歌词加载中...')
           .fontSize(20)
           .fontColor(Color.White)
           .margin({ top: 100 })
-      } else if (this.lyric.getAllLyrics().length === 0) {
+      } else if (this.lyric.lyrics.length === 0) {
         // 如果歌词为空，显示提示
         Text('暂无歌词')
           .fontSize(20)
@@ -281,15 +211,15 @@ struct Play {
           .margin({ top: 20, bottom: 10 })
         
         // 歌词显示区域
-        List({ space: 20, scroller: this.scroller }) {
+        List({ space: 20, scroller: this.lyric.scroller }) {
           // 获取所有歌词行
-          ForEach(this.lyric.getAllLyrics(), (item:Line, index) => {
+          ForEach(this.lyric.lyrics, (item:Line, index) => {
             ListItem() {
               Text(item.text)
-                .fontSize(index === this.activeLyricIndex ? 25 : 20)
-                .fontWeight(index === this.activeLyricIndex ? FontWeight.Bold : FontWeight.Normal)
-                .fontColor(index === this.activeLyricIndex ? Color.White : Color.Black)
-                .opacity(index === this.activeLyricIndex ? 1 : 0.6)
+                .fontSize(index === this.lyric.activeLyricIndex ? 25 : 20)
+                .fontWeight(index === this.lyric.activeLyricIndex ? FontWeight.Bold : FontWeight.Normal)
+                .fontColor(index === this.lyric.activeLyricIndex ? Color.White : Color.Black)
+                .opacity(index === this.lyric.activeLyricIndex ? 1 : 0.6)
                 .textAlign(TextAlign.Center)
                 .animation({
                   duration: 300,
@@ -312,28 +242,8 @@ struct Play {
     .layoutWeight(1)
   }
 
-  @Local lyricUpdateTimer: number = -1
-
-  aboutToAppear() {// 页面进入时执行
-    this.context = getContext(this) as common.UIAbilityContext;// 获取上下文，用于请求权限
-    this.fetchLyric();// 加载歌词
-    this.lyricUpdateTimer = setInterval(() => {// 设置定时器, 每200毫秒更新一次歌词
-      this.updateLyric();
-    }, 200);
-  }
-  
-  aboutToDisappear() {
-    if (this.lyricUpdateTimer !== -1) {// 清理定时器，防止内存泄漏
-      clearInterval(this.lyricUpdateTimer);
-      this.lyricUpdateTimer = -1;
-    }
-    this.healthData.stopStepCounter();// 停止步数计数器
-  }
-
-
   // 运动模式
-  @Builder
-  RunMode() {
+  @Builder RunMode() {
     Column() {
       // 顶部标题
       Text('运动模式')
@@ -439,6 +349,7 @@ struct Play {
     .justifyContent(FlexAlign.Start)
    .layoutWeight(1)
   }
+
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
@@ -477,7 +388,7 @@ struct Play {
               Column() {
                 // 进度条
                 Row({ space: 4 }) {
-                  Text(this.number2time(this.playState.time))
+                  Text(this.playState.number2time(this.playState.time))
                     .fontSize(14)
                     .fontColor('#333333')
                     .fontWeight(FontWeight.Medium)
@@ -494,7 +405,7 @@ struct Play {
                     .selectedColor('#87CEFA')
                     .trackColor('#E6F3FF')
                     .trackThickness(4)
-                  Text(this.number2time(this.playState.duration))
+                  Text(this.playState.number2time(this.playState.duration))
                     .fontSize(14)
                     .fontColor('#333333')
                     .fontWeight(FontWeight.Medium)
