@@ -6,7 +6,7 @@ import { it } from "@ohos/hypium"
 import {songs} from "../models/music"
 
 @ComponentV2
-export struct Find {
+export struct Music {
   playState:GlobalMusic=AppStorageV2.connect(GlobalMusic,'SONG_KEY',()=> new GlobalMusic())!
   pathStack: NavPathStack = AppStorageV2.connect(NavPathStack,'navStack',()=> new NavPathStack())! //非空断言, 如果为空,则报错
 
