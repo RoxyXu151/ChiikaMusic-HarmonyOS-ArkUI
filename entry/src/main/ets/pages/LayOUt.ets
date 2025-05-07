@@ -49,10 +49,12 @@ struct LayOut {
     .backgroundColor(this.selectedTab==index?'#E6F3FF':'transparent')
     .borderRadius(16)
     .padding(8)
+    .width('80%')
   }
 
   build() {
     NavDestination() {
+      // 添加页面切换动画
       Tabs({ barPosition: BarPosition.End }) { //Tabs组件为底部tabBar组件，barPosition设置tabBar的位置,BarPosition.End表示底部
         ForEach(this.tabData, (item: TabClass, index: number) => {
           TabContent() { // 设置tabBar的item
@@ -61,19 +63,27 @@ struct LayOut {
             else if(index==2) MomentSquarePage() // 发现
             else if(index==3) Mine() // 我的
           }.tabBar(this.tabBuilder(item, index))
-          .backgroundColor('#FFFFFF')
+          .backgroundColor('#F0F8FF')
+          .border({radius: 5})
           .expandSafeArea()
+          .transition({ type: TransitionType.Insert, opacity: 1 })
         })
       }
       .onChange((index: number) => {
         this.selectedTab = index
       })
       .expandSafeArea()
-      .backgroundColor('#F0F8FF')
-      .animationDuration(AnimationMode.CONTENT_FIRST_WITH_JUMP)
+      .backgroundColor('#ffa5d3ef')
+      .animationDuration(400) // 增加动画持续时间
+
     }
     .expandSafeArea()
-    // .title('布局页')
+    .title('布局页')
+    .transition({
+      type:TransitionType.Insert,
+      opacity: 1,
+      translate: { x: 0, y: 0 }
+    })
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack
     })

@@ -12,5 +12,11 @@ struct Index {
       this.pathStack.pushPathByName("Start", null, false); //跳转ByName
     })
     .hideNavBar(true) //不会把自己加入到pathStack中
+    .mode(NavigationMode.Stack) // 设置导航模式为堆栈模式
+    .transition({
+      type: TransitionType.Insert, // 设置过渡类型为滑动
+      opacity: 1, // 设置不透明度
+      translate: { x: 0, y: 0 } // 设置平移
+    })
   }
 }

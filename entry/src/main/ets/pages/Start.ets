@@ -9,9 +9,14 @@ struct Start {
   pathStack: NavPathStack = new NavPathStack() //控制跳转的对象
   aboutToAppear(): void { // 页面进入时执行,3秒后跳转
     setTimeout(() => {
-      this.pathStack.replacePathByName('LayOut',null)
-    }, 3000)//ms
-    // this.pathStack.replacePathByName('LayOut',null)
+      // 添加淡出动画效果后再跳转
+      animateTo({
+        duration: 500,
+        curve: Curve.EaseOut,
+      }, () => {
+        this.pathStack.replacePathByName('LayOut',null)
+      })
+    }, 2500)//ms，提前开始动画，总体仍保持3秒跳转
   }
 
   build() {
@@ -21,14 +26,30 @@ struct Start {
           .width('100%')
           .height('100%')
           .expandSafeArea()
+          .transition({ type: TransitionType.Insert, opacity: 1 })
         Button('跳过')
           .backgroundColor(Color.Gray)
           .margin(20)
+          .transition({ type: TransitionType.Insert, opacity: 1 })
           .onClick(() => {
-            this.pathStack.replacePathByName('LayOut',null)
+            // 添加淡出动画效果
+            animateTo({
+              duration: 500,
+              curve: Curve.EaseOut,
+            }, () => {
+              this.pathStack.replacePathByName('LayOut',null)
+            })
           })
       }
     }
+    .transition({ type: TransitionType.Insert })
+    // .onPageShow(() => {
+    //   // 页面显示时添加淡入动画
+    //   animateTo({
+    //     duration: 800,
+    //     curve: Curve.EaseIn
+    //   }, () => {})
+    // })
     // .title('广告页')
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack

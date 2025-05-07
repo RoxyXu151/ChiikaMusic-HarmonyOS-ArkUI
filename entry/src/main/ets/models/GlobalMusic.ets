@@ -1,4 +1,4 @@
-import { SongItemType } from "./music"
+import { SongItemType, songs } from "./music"
 
 @ObservedV2
 export class GlobalMusic {
@@ -11,7 +11,7 @@ export class GlobalMusic {
   @Trace songId:number=-1
 
   @Trace playerIndex:number=0
-  @Trace playList:SongItemType[]=[]
+  @Trace playList:SongItemType[]=songs
 
   @Trace isPlay:boolean=false//  是否播放
 

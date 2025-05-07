@@ -347,6 +347,7 @@ struct Play {
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
+
         // 播放
         Stack() {
           // 变色背景
@@ -367,15 +368,27 @@ struct Play {
               // 图片、唱针、歌名、作者
               Column(){
                 //  唱片模式
-                if(this.playMode==0) this.DiscMode()
+                if(this.playMode==0) {
+                  this.DiscMode()
+                }
                 // 歌词模式
-                else if(this.playMode==1) this.LrcMode()
+                else if(this.playMode==1) {
+                  this.LrcMode()
+                }
                 // 运动模式
-                else if(this.playMode==2) this.RunMode()
+                else if(this.playMode==2) {
+                  this.RunMode()
+                }
               }.layoutWeight(1)
               .width('100%')
               .onClick(()=>{
-                this.playMode=(this.playMode+1)%3
+                // 添加播放模式切换动画
+                animateTo({
+                  duration: 400,
+                  curve: Curve.Friction,
+                }, () => {
+                  this.playMode=(this.playMode+1)%3
+                })
               })
 
               // 播放

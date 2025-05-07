@@ -293,7 +293,7 @@ export struct MomentSquarePage {
         scrollBackward: NestedScrollMode.SELF_FIRST,
       })
     }
-    .backgroundColor('#FFFFFF')
+    .backgroundColor('#f0f8ff')
     .expandSafeArea()
   }
 }
