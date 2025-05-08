@@ -78,7 +78,6 @@ struct LayOut {
 
     }
     .expandSafeArea()
-    .title('布局页')
     .transition({
       type:TransitionType.Insert,
       opacity: 1,

@@ -45,7 +45,7 @@ class AvSessionManager {
       artist: song.author,
       // album: song.album,
       duration: this.playState.duration,
-      mediaImage:song.img
+      mediaImage:song.img.startsWith('http')?song.img:'https://hm-music.oss-cn-beijing.aliyuncs.com/image/song'+song.id.substring(3,4)+'.jpg'
     })
   }
 

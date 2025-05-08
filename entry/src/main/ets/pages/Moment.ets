@@ -17,7 +17,7 @@ export struct MomentSquarePage {
     {
       author: 'Feast-aws',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h0.jpg',
-      content: '二十几岁的你，一无所有，也拥有一切！',
+      content: '若心怀畏惧，就翻越群山吧。向永不满足的内心，倾泻而下的流水带来治愈。《旅人の唄》让我感受到了生命的力量。',
       comment: 604,
       like: 23382,
       song: songs[0]
@@ -25,7 +25,7 @@ export struct MomentSquarePage {
     {
       author: 'CeeYet',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h1.jpg',
-      content: '画一个姑娘陪着我,再画一个姑娘陪着我',
+      content: '想要破坏，想要彻底摧毁，若是为了你的话，哪管什么不纯与矛盾。《オンリー》唱出了我内心深处的矛盾与执着。',
       comment: 1237,
       like: 5482,
       song: songs[1]
@@ -33,7 +33,7 @@ export struct MomentSquarePage {
     {
       author: 'Z_HOUSC',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h2.jpg',
-      content: '这个事还得从两个职业选手说起',
+      content: '在想象之上，无人能及之处，指尖缔结的约定即是永恒。《旅人の唄～帰郷～》让我想起了回家的路。',
       comment: 8425,
       like: 4234,
       song: songs[2]
@@ -41,7 +41,7 @@ export struct MomentSquarePage {
     {
       author: '逆转大师',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h3.jpg',
-      content: '听奢香夫人，做上岸女人！',
+      content: '穿越轮回的星之子啊，请遵循命运安排。《目覚めの唄》唤醒了沉睡的灵魂，每当向世间真理寻求救赎，都寄托着虔诚祈愿。',
       comment: 7658,
       like: 11545,
       song: songs[3]
@@ -49,7 +49,7 @@ export struct MomentSquarePage {
     {
       author: 'Moriaty',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h4.jpg',
-      content: '别一厢情愿的付出，他如果拒绝你了就别再纠缠了，别一次次满满热情得到的都是敷衍冷淡的回复，你不该这样的，你应该酷一点，别打扰真的是最好的选择。',
+      content: '致迷途的旅人啊，请收下这星斗的光芒，倾听耕耘大地的回响。《祈りの唄》教会我向大地的每一粒尘埃献上感恩与祈愿。',
       comment: 543,
       like: 2234,
       song: songs[4]
@@ -57,7 +57,7 @@ export struct MomentSquarePage {
     {
       author: '丶你要去哪里',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h5.jpg',
-      content: '当年会一段潘帅的RAP是很拉风的事情',
+      content: '林间喧嚣，屏息凝神，未曾相识却将身心托付。《継承の唄》让我明白，当交织的时光洪流尚未塑成我身之前，以无名的纯粹姿态将己身尽数献祭。',
       comment: 14415,
       like: 36297,
       song: songs[5]
@@ -65,7 +65,7 @@ export struct MomentSquarePage {
     {
       author: '一个人的某泥',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h6.jpg',
-      content: '抗韩二十年，死于朴智妍',
+      content: '让初啼响彻世间，宣告生命降临的庄严。《遠くの子守の唄》如同母亲的摇篮曲，温柔地守护着每一个生命。',
       comment: 1237,
       like: 5482,
       song: songs[6]
@@ -73,7 +73,7 @@ export struct MomentSquarePage {
     {
       author: '曾经那个少年1993',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h7.jpg',
-      content: '一个人去游泳，像投河；倒过来，一个人去投河，像游泳，太孤独。 ———-陈小三',
+      content: '《Inori no Uta》让我感受到了祈祷的力量，就像在黑暗中点亮的一盏明灯，指引着前行的方向。无论多么迷茫，总有一束光照亮前路。',
       comment: 7628,
       like: 36448,
       song: songs[7]
@@ -81,7 +81,7 @@ export struct MomentSquarePage {
     {
       author: '柳崽崽阿',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h8.jpg',
-      content: '哎呦，B站来的跟我一起摇💃',
+      content: '《Tabibito no Uta》中那句"在想象之上，无人能及之处"，让我想起了自己的旅途。每一段旅程都是对自我的探索与超越。',
       comment: 1237,
       like: 5482,
       song: songs[8]
@@ -89,7 +89,7 @@ export struct MomentSquarePage {
     {
       author: '李富贵他哥',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h9.jpg',
-      content: '我弟弟老是偷我的裙子丝袜穿，我担心他在女装的道路上越走越远，这让我这个当哥哥的很是担心啊',
+      content: '《Only》唱出了爱的矛盾与执着，"想要守护的是教会我一切的你，只有你"，这种感情如此纯粹又复杂，让人沉醉其中。',
       comment: 7362,
       like: 11482,
       song: songs[9]
@@ -97,7 +97,7 @@ export struct MomentSquarePage {
     {
       author: '一檀溪一',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h10.jpg',
-      content: '想起张雪峰说过的全世界最大的社区天通苑，住了400w人，光是地铁修了三站，去赶早上第一班天通苑的地铁，那才是真正的北京，真的是哭辽',
+      content: '《Mezame no Uta》中"每当向世间真理寻求救赎，都寄托着虔诚祈愿"这句歌词，让我在迷茫时找到了前进的勇气。',
       comment: 6496,
       like: 8526,
       song: songs[10]
@@ -105,7 +105,7 @@ export struct MomentSquarePage {
     {
       author: '-_Dimple_',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h11.jpg',
-      content: '今天为了赶地铁在电梯上摔了一跤，手磕破了，马上起来进了地铁结果发现一着急坐反了。某一刻觉得自己长大了，摔倒了不是先难受，想哭觉得丢脸，而是想着快点赶上地铁。大概成年人的无奈就是没时间让我难过一会儿吧。',
+      content: '《Inori no Uta》中"向大地的每一粒尘埃献上感恩与祈愿"，让我学会了感恩生活中的每一个细节，珍惜当下的每一刻。',
       comment: 1237,
       like: 5482,
       song: songs[11]
@@ -113,7 +113,7 @@ export struct MomentSquarePage {
     {
       author: 'h奔放小青年',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h12.jpg',
-      content: '关于这部电影看到过一个评论：当年大学毕业以后我和女友各奔东西，曾经一个晚上，偶然又看了这部电影，当至尊宝拥吻紫霞的时候荡气回肠的歌声也让我潸然泪下。。。。。第二天我打起行囊踏上火车往她家赶，如今十年过去，我们已经有了一个可爱的女儿。 我想，这是对一部电影最好的肯定吧',
+      content: '《Keishou no Uta》让我明白，我们都是时光长河中的一粒沙，但每一粒沙都有自己的价值和意义。以无名的纯粹姿态，将己身尽数献祭。',
       comment: 1237,
       like: 5482,
       song: songs[12]
@@ -121,7 +121,7 @@ export struct MomentSquarePage {
     {
       author: '您的坑友已上线',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h13.jpg',
-      content: '李克勤说他唱了三十多年的歌，当接下面具的时候还很紧张，还很担心自己能不能被大家认出来，然后当《红日》想起来的时候，自己都被感动了。前天看张信哲在央视的开讲啦，坦言面对"过气"一次能够接受，撒贝宁说的很好，这批歌迷也许不会通过刷微博来支持，但是他在这些人的心里比微博上更重要。',
+      content: '《Tooku no Komori no Uta》如同母亲的摇篮曲，温柔地守护着每一个生命。让初啼响彻世间，宣告生命降临的庄严。',
       comment: 1237,
       like: 5482,
       song: songs[13]
@@ -129,7 +129,7 @@ export struct MomentSquarePage {
     {
       author: '一个人的某泥',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h14.jpg',
-      content: '11年初三，无意中听到这首歌，推荐给同学，他们都说一般般。当我在家外放这首歌时，我奶奶对我说："这什么歌，这么好听。',
+      content: '《Tabibito no Uta》中"若心怀畏惧，就翻越群山吧"这句歌词给了我面对困难的勇气。无论前路多么艰难，都要勇往直前。',
       comment: 1237,
       like: 5482,
       song: songs[14]
@@ -137,7 +137,7 @@ export struct MomentSquarePage {
     {
       author: '不想早起',
       avatar: 'http://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/HeimaCloudMusic/h15.jpg',
-      content: '文不黑周树人 武不黑李小龙 音不黑黄家驹 影不黑周星驰',
+      content: '《Only》中"想要破坏，想要彻底摧毁，若是为了你的话"，唱出了爱的极致与矛盾。这种感情如此强烈，让人无法自拔。',
       comment: 1237,
       like: 5482,
       song: songs[15]
@@ -189,12 +189,10 @@ export struct MomentSquarePage {
               .width('90%')
               .margin({ left: 16, right: 16, top: 16 })
               .align(Alignment.TopStart)
-
-
               // 歌曲卡片
               Row() {
                 // 歌曲封面
-                Image(item.song.img)
+                Image(item.song.img.startsWith('http')?item.song.img:$r(item.song.img))
                   .width(60)
                   .height(60)
                   .borderRadius(16)
@@ -227,6 +225,7 @@ export struct MomentSquarePage {
               .height(70)
               .padding(8)
               .align(Alignment.Center)
+              .backgroundColor('#fff5d9d9')
 
               // 操作栏
               Row({ space: 32 }) {
