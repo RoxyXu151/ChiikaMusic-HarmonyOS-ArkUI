@@ -26,8 +26,7 @@ struct Play {
   //运动健康
   @Local healthData:GlobalHealthData=AppStorageV2.connect(GlobalHealthData,'HEALTH_KEY',()=>new GlobalHealthData())!
   //歌词列表
-  @Local panelHeight: string = '0%'
-  @Local panelOpacity: number = 0
+  @Local isShowSheet: boolean = false;
 
 
   aboutToAppear() {// 页面进入时执行
@@ -47,6 +46,7 @@ struct Play {
     this.healthData.stopStepCounter();// 停止步数计数器
   }
 
+  // 删除按钮
   @Builder deleteButton(index: number) {
     Button('删除')
       .backgroundColor('#87CEFA')
@@ -344,10 +344,110 @@ struct Play {
    .layoutWeight(1)
   }
 
+  // 播放列表
+  @Builder songList(){
+    // 列表
+    Column() {
+      Column() {
+        // 标题栏
+        Row() {
+          //  播放按钮
+          Row() {
+            Image($r("app.media.ic_play"))
+              .width(24)
+              .fillColor('#87CEFA')
+          }
+          .width(50)
+          .aspectRatio(1)
+          .justifyContent(FlexAlign.Center)
+          // 播放列表标题
+          Row({ space: 8 }) {
+            Text(`播放列表 (${this.playState.playList.length})`)
+              .fontColor('#333333')
+              .fontSize(16)
+              .fontWeight(FontWeight.Bold)
+          }
+          .layoutWeight(1)
+
+        }
+        .width('100%')
+        .backgroundColor('#f1f3f5')
+        .border({
+          width: { bottom: 1 },
+          color: Color.White
+        })
+
+        // 播放列表
+        List() {
+          ForEach(this.playState.playList, (item: SongItemType, index: number) => {
+            ListItem() {
+              Row() {
+                Row() {// 播放序号
+                  Text((index + 1).toString())
+                    .fontColor('#87CEFA')
+                    .fontSize(16)
+                    .fontWeight(FontWeight.Bold)
+                }
+                .width(50) // 设置宽度为50
+                .aspectRatio(1) // 设置宽高比为1
+                .justifyContent(FlexAlign.Center) //  水平居中
+
+                // 列表
+                Row({ space: 10 }) {
+                  Column() {
+                    Text(item.name)
+                      .fontSize(16)
+                      .fontColor('#333333')
+                      .fontWeight(FontWeight.Medium)
+                    Text(item.author)
+                      .fontSize(14)
+                      .fontColor('#666666')
+                  }
+                  .layoutWeight(1)
+                  .alignItems(HorizontalAlign.Start)
+                  .justifyContent(FlexAlign.Center)
+                }
+                .layoutWeight(1)
+
+                Image($r('app.media.ic_more'))
+                  .width(28)
+                  .height(28)
+                  .margin({ right: 16 })
+                  .fillColor('#87CEFA')
+              }
+              .alignItems(VerticalAlign.Center)
+              .backgroundColor('#FFFFFF')
+              .borderRadius(12)
+              .margin({ bottom: 8, left: 8, right: 8 })
+              .padding(8)
+              .onClick(() => {
+                playerManager.singPlay(item)
+              })
+            }
+            .swipeAction({
+              end: this.deleteButton(index)
+            })
+            .border({
+              width: { bottom: 1 },
+              color: '#12ec5c87'
+            })
+          })
+        }
+        .layoutWeight(1)
+        .backgroundColor('#F0F8FF')
+      }
+    }
+    .height('100%')
+    .animation({
+      duration: 300
+    })
+    .backgroundColor('#ff353333')
+    // .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
+  }
+
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
-
         // 播放
         Stack() {
           // 变色背景
@@ -458,10 +558,12 @@ struct Play {
                   Image($r('app.media.ic_song_list'))
                     .fillColor('#87CEFA')
                     .width(36)
-                    .onClick(() => {
-                      this.panelHeight = '50%'
-                      this.panelOpacity = 1
+                    .onClick(() => {this.isShowSheet = !this.isShowSheet})
+                    .bindSheet($$this.isShowSheet, this.songList(), {
+                      detents: [SheetSize.MEDIUM, SheetSize.LARGE, 600],
+                      preferType: SheetType.BOTTOM,
                     })
+
                 }
                 .width('100%')
                 .padding({
@@ -479,135 +581,10 @@ struct Play {
         .height('100%')
         .backgroundColor(Color.Transparent)
 
-        // 列表
-        Column() {
-          Column() {
-
-          }
-          .width('100%')
-          .layoutWeight(1)
-          .onClick(() => {
-            this.panelHeight = '0%'
-            this.panelOpacity = 0
-          })
-
-          Column() {
-            Row() {
-              Row() {
-                Image($r("app.media.ic_play"))
-                  .width(24)
-                  .fillColor('#87CEFA')
-              }
-              .width(50)
-              .aspectRatio(1)
-              .justifyContent(FlexAlign.Center)
-
-              Row({ space: 8 }) {
-                Text(`播放列表 (${this.playState.playList.length})`)
-                  .fontColor('#333333')
-                  .fontSize(16)
-                  .fontWeight(FontWeight.Bold)
-              }
-              .layoutWeight(1)
-
-              Image($r('app.media.ic_close'))
-                .fillColor('#87CEFA')
-                .width(28)
-                .height(28)
-                .margin({ right: 16 })
-                .onClick(() => {
-                  this.panelHeight = '0%'
-                  this.panelOpacity = 0
-                })
-            }
-            .width('100%')
-            .backgroundColor('#F0F8FF')
-            .padding(12)
-            .border({
-              width: { bottom: 1 },
-              color: '#87CEFA'
-            })
-            .borderRadius({
-              topLeft: 16,
-              topRight: 16
-            })
-
-            // 播放列表
-            List() {
-              ForEach(this.playState.playList, (item: SongItemType, index: number) => {
-                ListItem() {
-                  Row() {
-                    Row() {// 播放序号
-                      Text((index + 1).toString())
-                        .fontColor('#87CEFA')
-                        .fontSize(16)
-                        .fontWeight(FontWeight.Bold)
-                    }
-                    .width(50) // 设置宽度为50
-                    .aspectRatio(1) // 设置宽高比为1
-                    .justifyContent(FlexAlign.Center) //  水平居中
-
-                    // 列表
-                    Row({ space: 10 }) {
-                      Column() {
-                        Text(item.name)
-                          .fontSize(16)
-                          .fontColor('#333333')
-                          .fontWeight(FontWeight.Medium)
-                        Text(item.author)
-                          .fontSize(14)
-                          .fontColor('#666666')
-                      }
-                      .layoutWeight(1)
-                      .alignItems(HorizontalAlign.Start)
-                      .justifyContent(FlexAlign.Center)
-                    }
-                    .layoutWeight(1)
-
-                    Image($r('app.media.ic_more'))
-                      .width(28)
-                      .height(28)
-                      .margin({ right: 16 })
-                      .fillColor('#87CEFA')
-                  }
-                  .alignItems(VerticalAlign.Center)
-                  .backgroundColor('#FFFFFF')
-                  .borderRadius(12)
-                  .margin({ bottom: 8, left: 8, right: 8 })
-                  .padding(8)
-                  .onClick(() => {
-                    playerManager.singPlay(item)
-                  })
-                }
-                .swipeAction({
-                  end: this.deleteButton(index)
-                })
-                .border({
-                  width: { bottom: 1 },
-                  color: '#12ec5c87'
-                })
-              })
-            }
-            .layoutWeight(1)
-            .backgroundColor('#F0F8FF')
-            .padding({ left: 8, right: 8, top: 8 })
-
-          }
-          .height(400)
-        }
-        .height(this.panelHeight)
-        // .height('100%')
-        .animation({
-          duration: 300
-        })
-        .backgroundColor('#ff353333')
-        .opacity(this.panelOpacity)
-        .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
       }
       .width('100%')
       .height('100%')
       .backgroundColor(Color.Transparent)
-
     }
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack

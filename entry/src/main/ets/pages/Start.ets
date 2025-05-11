@@ -6,7 +6,9 @@ export function StartBuilder() {
 
 @Component
 struct Start {
+
   pathStack: NavPathStack = new NavPathStack() //控制跳转的对象
+
   aboutToAppear(): void { // 页面进入时执行,3秒后跳转
     setTimeout(() => {
       // 添加淡出动画效果后再跳转
@@ -43,14 +45,6 @@ struct Start {
       }
     }
     .transition({ type: TransitionType.Insert })
-    // .onPageShow(() => {
-    //   // 页面显示时添加淡入动画
-    //   animateTo({
-    //     duration: 800,
-    //     curve: Curve.EaseIn
-    //   }, () => {})
-    // })
-    // .title('广告页')
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack
     })
