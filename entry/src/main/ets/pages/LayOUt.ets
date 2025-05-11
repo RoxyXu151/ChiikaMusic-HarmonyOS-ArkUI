@@ -1,6 +1,6 @@
 import { Music } from "./Music"
 import { Recommend } from "./Recommend"
-import { AppStorageV2 } from "@kit.ArkUI"
+import { AppStorageV2, curves } from "@kit.ArkUI"
 import { Mine } from "./Mine"
 import { MomentSquarePage } from "./Moment"
 import componentUtils from '@ohos.arkui.componentUtils';
@@ -54,7 +54,6 @@ struct LayOut {
         .fontWeight(this.selectedTab==index?FontWeight.Bold:FontWeight.Normal)
         .id(index.toString()) // 添加id用于获取位置信息
     }
-    // .backgroundColor(this.selectedTab==index?'#E6F3FF':'transparent')
     .borderRadius(16)
     .padding(8)
     .width('80%')
@@ -111,7 +110,7 @@ struct LayOut {
             this.indicatorWidth = currentIndicatorInfo.width
           })
         }
-        // 导航条 - 放在TabBar上方
+        // 导航条
         Column()
           .width(this.indicatorWidth)
           .height(2)
@@ -167,7 +166,7 @@ struct LayOut {
       // 动画时长
       duration: duration,
       // 动画曲线
-      curve: Curve.Linear,
+      curve: curves.springMotion(0.5, 0.5),
       // 播放次数
       iterations: 1,
       // 动画模式

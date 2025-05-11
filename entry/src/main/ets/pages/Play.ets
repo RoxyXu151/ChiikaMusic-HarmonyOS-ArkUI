@@ -592,7 +592,7 @@ struct Play {
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack
     })
-    .transition(TransitionEffect.translate({ y: 1000 }).animation({ curve: curves.springMotion(0.6, 0.8) }))
+    .transition(TransitionEffect.translate({ y: 1000 }).animation({ curve: curves.springMotion(0.6, 0.825) }))
     .hideTitleBar(true) // 隐藏标题栏
   }
 }
