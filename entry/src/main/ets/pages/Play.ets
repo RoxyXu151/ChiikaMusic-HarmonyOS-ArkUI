@@ -1,5 +1,5 @@
 import { SongItemType } from "../models/music"
-import { AppStorageV2 } from "@kit.ArkUI";
+import { AppStorageV2, curves } from "@kit.ArkUI";
 import { GlobalMusic } from "../models/GlobalMusic";
 import { playerManager } from "../utils/AvPlayerManager";
 import { GlobalLyric, Line} from "../models/Lyric";
@@ -26,6 +26,7 @@ struct Play {
   //运动健康
   @Local healthData:GlobalHealthData=AppStorageV2.connect(GlobalHealthData,'HEALTH_KEY',()=>new GlobalHealthData())!
   //歌词列表
+
   @Local isShowSheet: boolean = false;
 
 
@@ -448,6 +449,7 @@ struct Play {
   build() {
     NavDestination() {
       Stack({ alignContent: Alignment.Bottom }) {
+
         // 播放
         Stack() {
           // 变色背景
@@ -585,10 +587,12 @@ struct Play {
       .width('100%')
       .height('100%')
       .backgroundColor(Color.Transparent)
+
     }
     .onReady((context: NavDestinationContext) => {
       this.pathStack = context.pathStack
     })
+    .transition(TransitionEffect.translate({ y: 1000 }).animation({ curve: curves.springMotion(0.6, 0.8) }))
     .hideTitleBar(true) // 隐藏标题栏
   }
 }
