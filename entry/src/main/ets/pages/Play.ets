@@ -97,8 +97,8 @@ struct Play {
         Row() {
           Row() {
             Image(this.playState.img.startsWith('http')?this.playState.img:$r(this.playState.img))
-              .width('70%')
-              .borderRadius(400)
+              .width(200).height(200)
+              .borderRadius(400) // 添加圆形边框,直径还是半径：直径为400，半径为200
               .border({ width: 4, color: '#87CEFA' }) // 添加淡蓝色边框
           }
           .backgroundImage($r('app.media.ic_cd'))
