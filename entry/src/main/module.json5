@@ -23,33 +23,33 @@
         "reason": "$string:reason_ActivityMotion",
         "usedScene": {
           "abilities": ["EntryAbility"],
-          "when": "inuse"
+          "when": "always"
         }
       },
-      {
-        "name": "ohos.permission.APPROXIMATELY_LOCATION", // 获取位置信息
-        "reason": "$string:reason_APPROXIMATELY_LOCATION",
-        "usedScene": {
-          "abilities": ["EntryAbility"],
-          "when": "inuse"
-        }
-      },
-      {
-        "name": "ohos.permission.LOCATION",
-        "reason": "$string:reason_APPROXIMATELY_LOCATION",
-        "usedScene": {
-          "abilities": ["EntryAbility"],
-          "when": "inuse"
-        }
-      },
-      {
-        "name": "ohos.permission.LOCATION_IN_BACKGROUND",
-        "reason": "$string:reason_APPROXIMATELY_LOCATION",
-        "usedScene": {
-          "abilities": ["EntryAbility"],
-          "when": "inuse"
-        }
-      },
+//      {
+//        "name": "ohos.permission.APPROXIMATELY_LOCATION", // 获取位置信息
+//        "reason": "$string:reason_APPROXIMATELY_LOCATION",
+//        "usedScene": {
+//          "abilities": ["EntryAbility"],
+//          "when": "inuse"
+//        }
+//      },
+//      {
+//        "name": "ohos.permission.LOCATION",
+//        "reason": "$string:reason_APPROXIMATELY_LOCATION",
+//        "usedScene": {
+//          "abilities": ["EntryAbility"],
+//          "when": "inuse"
+//        }
+//      },
+//      {
+//        "name": "ohos.permission.LOCATION_IN_BACKGROUND",
+//        "reason": "$string:reason_APPROXIMATELY_LOCATION",
+//        "usedScene": {
+//          "abilities": ["EntryAbility"],
+//          "when": "inuse"
+//        }
+//      },
     ],
     "deliveryWithInstall": true,
     "installationFree": false,

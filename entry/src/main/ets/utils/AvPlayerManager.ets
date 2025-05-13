@@ -5,6 +5,7 @@ import { AppStorageV2 } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { print, PrintExtensionAbility } from '@kit.BasicServicesKit';
 import { avSessionManager } from './AvSessionManager';
+import { GlobalLyric } from '../models/Lyric';
 
 class AvPlayerManager{
 
@@ -12,6 +13,8 @@ class AvPlayerManager{
 
   //共享播放数据
   currentSong:GlobalMusic=AppStorageV2.connect(GlobalMusic,'SONG_KEY',()=>new GlobalMusic())!
+  // 歌词数据
+  lyric:GlobalLyric=AppStorageV2.connect(GlobalLyric,'LYRIC_KEY',()=>new GlobalLyric())!
   //创建播放器+监听播放器状态
   async init(){
     if(!this.player){
@@ -113,6 +116,7 @@ class AvPlayerManager{
         this.singPlay(this.currentSong.playList[this.currentSong.playerIndex])
         break;
     }
+    this.lyric.fetchLyric(this.currentSong) // 获取当前播放的歌曲对应歌词
   }
 
   //下一首
@@ -134,6 +138,7 @@ class AvPlayerManager{
         this.singPlay(this.currentSong.playList[this.currentSong.playerIndex])
         break;
     }
+    this.lyric.fetchLyric(this.currentSong) // 获取当前播放的歌曲对应歌词
   }
 
   //释放资源

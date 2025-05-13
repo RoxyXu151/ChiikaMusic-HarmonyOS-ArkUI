@@ -1,6 +1,7 @@
 import { common } from '@kit.AbilityKit'
 import { sensor } from '@kit.SensorServiceKit'
 import { BusinessError } from '@kit.BasicServicesKit'
+import { activityManager } from '../utils/ActivityManager'
 
 @ObservedV2
 export class GlobalHealthData{
@@ -15,6 +16,8 @@ export class GlobalHealthData{
   // 使用真实传感器统计步数
   async startStepCounter() {
     console.debug(`[ChiikaMusic]:启动运动模式, stepCount=${this.stepCount}`)
+    const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+    activityManager.checkPermissions(context)
     try {
       // 订阅计步器传感器
       sensor.on(sensor.SensorId.PEDOMETER, (data: sensor.PedometerResponse) => {
