@@ -90,4 +90,5 @@ class AvSessionManager {
 
 }
 
+// 创建AVSessionManager实例
 export const avSessionManager: AvSessionManager = new AvSessionManager()
