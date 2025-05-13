@@ -8,8 +8,8 @@ class ActivityManager {
   async checkPermissions(context: common.UIAbilityContext): Promise<void> {
     let stepStatus: boolean = await this.checkPermissionGrant('ohos.permission.ACTIVITY_MOTION') ===
     abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED; // 获取运动传感器权限
-    console.debug("[ChiikaMusic]:未获得ACTIVITY_MOTION权限")
     if(!stepStatus){
+      console.debug("[ChiikaMusic]:未获得ACTIVITY_MOTION权限")
       console.debug("[ChiikaMusic]:尝试申请ACTIVITY_MOTION权限")
       this.reqPermissionsFromUser(permissions, context);
     }
@@ -61,37 +61,6 @@ class ActivityManager {
     }).catch((err: BusinessError) => {
       console.error(`Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
     })
-  }
-
-
-
-  getSensorList() {
-    sensor.getSensorList((error: BusinessError, data: Array<sensor.Sensor>) => {
-      if (error) {
-        console.info('getSensorList failed');
-      } else {
-        console.info('getSensorList success');
-        for (let i = 0; i < data.length; i++) {
-          console.info(JSON.stringify(data[i]));
-        }
-      }
-    });
-  }
-
-  on() {
-    sensor.on(sensor.SensorId.ACCELEROMETER, (data: sensor.AccelerometerResponse) => {
-      console.info("Succeeded in obtaining data. x: " + data.x + " y: " + data.y + " z: " + data.z);
-    }, { interval: 100000000 });
-  }
-
-  once() {
-    sensor.once(sensor.SensorId.ACCELEROMETER, (data: sensor.AccelerometerResponse) => {
-      console.info("Succeeded in obtaining data. x: " + data.x + " y: " + data.y + " z: " + data.z);
-    });
-  }
-
-  off() {
-    sensor.off(sensor.SensorId.ACCELEROMETER);
   }
 }
 

@@ -18,6 +18,7 @@ class AvPlayerManager{
   //创建播放器+监听播放器状态
   async init(){
     if(!this.player){
+      // 调用media.createAVPlayer()创建AVPlayer实例
       this.player=await media.createAVPlayer();
     }
     this.player.on('stateChange', (state) => {
@@ -147,4 +148,5 @@ class AvPlayerManager{
   }
 }
 
+// export const playerManager以便于其他模块使用
 export const playerManager:AvPlayerManager=new AvPlayerManager()
