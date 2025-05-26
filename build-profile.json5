@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\WenbinXu\\.ohos\\config\\default_ChiikaMusic_bm5K8oYm4jDWDibtE_6_I3pC_whDfb0D96A7JOsRnLo=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A2A89BC46E688A5CF3498F23B938590FC7D118E754E078B50ECF4147311C628026C122DA2E335",
+          "profile": "C:\\Users\\WenbinXu\\.ohos\\config\\default_ChiikaMusic_bm5K8oYm4jDWDibtE_6_I3pC_whDfb0D96A7JOsRnLo=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\WenbinXu\\.ohos\\config\\default_ChiikaMusic_bm5K8oYm4jDWDibtE_6_I3pC_whDfb0D96A7JOsRnLo=.p12",
+          "storePassword": "0000001A4C37720C9AC1A47AA1603A4E27D0FE438AE6D526A02ADCE3AD3BD5FA6DFE7D5F2E350358E060"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
